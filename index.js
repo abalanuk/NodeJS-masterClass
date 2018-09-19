@@ -13,12 +13,16 @@ const server = http.createServer(function(req, res){
   // Get the HTTP method
   const {method} = req
 
+  // Get the query string as an object
+  const {query} = parsedUrl
+
   // Send the response
   res.end("TEST\n");
 
   // Log the path user requested
   console.log("Requested path: " + trimmedPath);
   console.log("With method: " + method);
+  console.log("Query object is: " + query);
 });
 
 server.listen(3000, function(){
