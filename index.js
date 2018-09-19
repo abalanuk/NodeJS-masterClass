@@ -22,7 +22,7 @@ const server = http.createServer(function(req, res){
   // Log the path user requested
   console.log("Requested path: " + trimmedPath);
   console.log("With method: " + method);
-  console.log("Query object is: " + query);
+  console.log("Query object is: \n" + JSON.stringify(query));
 });
 
 server.listen(3000, function(){
