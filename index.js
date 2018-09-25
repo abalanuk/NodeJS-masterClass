@@ -34,8 +34,6 @@ const server = http.createServer(function(req, res){
     const chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ?
     router[trimmedPath] : handlers.notFound;
 
-    console.log(chosenHandler);
-
     // Construct data object to send to the handler
     data = {
       'trimmedPath': trimmedPath,
@@ -54,6 +52,7 @@ const server = http.createServer(function(req, res){
         const payloadString = JSON.stringify(payload);
 
         // Send the response
+        res.setHeader('Content-Type', 'application/json');
         res.writeHead(statusCode);
         res.end(payloadString);
 
@@ -76,7 +75,7 @@ server.listen(3000, function(){
 handlers = {
   test: function(data, callback){
     // callback a http status code and a payload object
-    callback(406, {name: 'test handler'});
+    callback(406, data);
   },
   notFound: function(data, callback){
     callback(404);
