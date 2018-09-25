@@ -30,10 +30,35 @@ const server = http.createServer(function(req, res){
   req.on('end', function(){
     buffer += decoder.end();
 
-    // Send the response
-    res.end("TEST\n");
+    //Choose the handler this request should go to
+    const chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ?
+    router[trimmedPath] : handlers.notFound;
 
-    console.log("Request payload: \n" + buffer);
+    console.log(chosenHandler);
+
+    // Construct data object to send to the handler
+    data = {
+      'trimmedPath': trimmedPath,
+      'query': query,
+      'method': method,
+      'headers': headers,
+      'payload': buffer
+    }
+
+    chosenHandler(data, function(statusCode, payload){
+        // Use the status code or the default 200
+        statusCode = typeof(statusCode) === 'number' ? statusCode : 200;
+        // Use the payload or the default {}
+        payload = typeof(payload) === 'object' ? payload : {};
+
+        const payloadString = JSON.stringify(payload);
+
+        // Send the response
+        res.writeHead(statusCode);
+        res.end(payloadString);
+
+        console.log("Returned response: \n", statusCode, payloadString);
+    })
   })
 
   // Log the path user requested
@@ -46,3 +71,19 @@ const server = http.createServer(function(req, res){
 server.listen(3000, function(){
   console.log("Server is listening on port 3000")
 });
+
+//Define the handlers
+handlers = {
+  test: function(data, callback){
+    // callback a http status code and a payload object
+    callback(406, {name: 'test handler'});
+  },
+  notFound: function(data, callback){
+    callback(404);
+  }
+}
+
+// Define a request router
+router = {
+  'test': handlers.test
+}
