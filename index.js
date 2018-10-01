@@ -1,6 +1,7 @@
 const http = require('http');
 const url = require('url');
 const stringDecoder = require('string_decoder').StringDecoder;
+const config = require('./config');
 
 const server = http.createServer(function(req, res){
   // Get the URL and parse it
@@ -62,13 +63,15 @@ const server = http.createServer(function(req, res){
 
   // Log the path user requested
   console.log("Requested path: " + trimmedPath);
+  /*
   console.log("With method: " + method);
-  //console.log("Query object is: \n" + JSON.stringify(query));
-  //console.log("Request headers: \n" + JSON.stringify(headers));
+  console.log("Query object is: \n" + JSON.stringify(query));
+  console.log("Request headers: \n" + JSON.stringify(headers));
+  */
 });
 
-server.listen(3000, function(){
-  console.log("Server is listening on port 3000")
+server.listen(config.port, function(){
+  console.log("Server is listening on port " + config.port + " in "+ config.envName);
 });
 
 //Define the handlers
