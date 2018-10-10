@@ -4,7 +4,11 @@ const url = require('url');
 const stringDecoder = require('string_decoder').StringDecoder;
 const config = require('./config');
 const fs = require('fs');
+const _data = require('./lib/data');
 
+_data.delete('test', 'newFile', function(err){
+  console.log('this was the error', err);
+});
 
 // Instantiate http server
 const httpServer = http.createServer(function(req, res){
