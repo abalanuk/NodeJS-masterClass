@@ -5,10 +5,13 @@ const stringDecoder = require('string_decoder').StringDecoder;
 const config = require('./config');
 const fs = require('fs');
 const _data = require('./lib/data');
+const helpers = require('./lib/helpers');
+const handlers = require('./lib/handlers');
 
-_data.delete('test', 'newFile', function(err){
-  console.log('this was the error', err);
-});
+//Testing data library...
+// _data.delete('test', 'newFile', function(err){
+//   console.log('this was the error', err);
+// });
 
 // Instantiate http server
 const httpServer = http.createServer(function(req, res){
@@ -70,7 +73,7 @@ const unifiedServerCallback = function(req, res) {
         'query': query,
         'method': method,
         'headers': headers,
-        'payload': buffer
+        'payload': helpers.parseJsonToObject(buffer)
       }
 
       chosenHandler(data, function(statusCode, payload){
@@ -99,22 +102,9 @@ const unifiedServerCallback = function(req, res) {
     */
 }
 
-//Define the handlers
-handlers = {
-  ping: function(data, callback) {
-    // callback a http status code and a payload object
-    callback(200);
-  },
-  notFound: function(data, callback) {
-    callback(404);
-  },
-  hello: function(data, callback) {
-    callback(200, data);
-  }
-}
-
 // Define a request router
 router = {
   'ping': handlers.ping,
-  'hello': handlers.hello
+  'hello': handlers.hello,
+  'users': handlers.users
 }
