@@ -13,6 +13,11 @@ const handlers = require('./lib/handlers');
 //   console.log('this was the error', err);
 // });
 
+//Testing twilio API
+// helpers.sendTwilioSms('+380976503796', 'Hello!', function(err){
+//   console.log(err);
+// });
+
 // Instantiate http server
 const httpServer = http.createServer(function(req, res){
   unifiedServerCallback(req, res);
